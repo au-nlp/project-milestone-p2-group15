@@ -1,0 +1,5 @@
+category,n_problems,RandomBaseline_acc,TinyLenNet_acc,KeywordMatcher_acc,NumFriendly_acc,avg_acc_across_models
+Combinatorics,18,0.277777778,0.388888889,0.111111111,0.555555556,0.333333333
+Algebra,13,0.230769231,0.384615385,0.307692308,0.692307692,0.403846154
+Geometry,20,0.15,0.5,0.35,0.75,0.4375
+Number Theory,14,0.285714286,0.714285714,0.571428571,0.857142857,0.607142857
