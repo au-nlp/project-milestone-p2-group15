@@ -1,2 +1,5 @@
 .venv
+azure
 .env
+data/all_answers_pd/
+api_key.txt
