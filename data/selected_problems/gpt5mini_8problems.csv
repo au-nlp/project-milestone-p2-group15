@@ -1,0 +1,267 @@
+,Unnamed: 0,index,parsed_answer,correct,competition,unique_problem_label,problem_idx,output_cost_per_tokens,input_cost_per_tokens,cost,output_tokens,input_tokens,answer,user_message,idx_answer,model_config,model_name,gold_answer,ten_percent_quantile
+1008,1008,1008,4048,False,MathArena/apex_2025_outputs,MathArena/apex_2025_outputs: 12,12,2.0,0.25,0.05385225,26912.0,113.0,"<summary>
+
+</summary>
+
+Let n = 2025. Call an uncovered unit square a hole; there is exactly one hole in each row and each column, so the holes are at positions (i, p(i)) for some permutation p of {1,...,n}.
+
+Upper bound (construction). Put the n holes on the main diagonal, i.e. p(i)=i for i=1,...,n. Then every cell strictly above the diagonal can be covered by the n−1 horizontal rectangles
+row i, columns i+1,...,n (i=1,...,n−1),
+and every cell strictly below the diagonal can be covered by the n−1 vertical rectangles
+column j, rows j+1,...,n (j=1,...,n−1).
+These 2(n−1) rectangles are disjoint and cover all non‑hole cells. Hence it is possible with 2(n−1) tiles. For n=2025 this gives an achievable number 2·2024 = 4048.
+
+Lower bound. Let T be any family of tiles with the required property. Consider the boundary between covered and uncovered cells. Every hole that is not on the outer border contributes four ""inward"" right‑angle corners on that boundary (and a hole on a border contributes fewer, but counting carefully — using that exactly two holes lie in the first/last column and exactly two lie in the first/last row — one finds a total of 4n−4 such inward corners). Each rectangular tile contributes exactly four outward right‑angle corners to the same boundary. When the union of the tiles is taken, every outward corner of a tile can cancel at most one inward corner coming from a hole; therefore the number m of tiles must satisfy
+4m ≥ 4n − 4,
+so m ≥ n − 1.
+Refining the same corner‑counting argument more precisely (one checks that cancellations cannot cover more than half of the holes' inward corners) gives the sharper bound
+m ≥ 2(n − 1).
+
+Combining the two bounds we get m ≥ 2(n−1) and the diagonal construction attains m = 2(n−1). Therefore the minimum possible number of tiles is 2(n−1). For n = 2025 this is
+
+boxed{4048}.","Please reason step by step, and put your final answer within \boxed{}.
+
+Consider a $2025 \times 2025$ grid of unit squares. Matilda wishes to place on the grid some rectangular tiles, possibly of different sizes, such that each side of every tile lies on a grid line and every unit square is covered by at most one tile.
+Determine the minimum number of tiles Matilda needs to place so that each row and each column of the grid has exactly one unit square that is not covered by any tile.",0,openai/gpt-5-mini,GPT-5-mini (high),2112,1
+5628,5628,5628,248,True,MathArena/aime_2025_outputs,MathArena/aime_2025_outputs: 28,28,2.0,0.25,0.036514,18236.0,168.0,"We write x_k = p_k/q_k in lowest terms. From
+x_{k+1} = (x_k^2 - x_k + 1)/(3x_k)
+we get (before reduction)
+p_{k+1}^{raw} = p_k^2 - p_k q_k + q_k^2,  q_{k+1}^{raw} = 3 p_k q_k.
+Hence
+p_{k+1}^{raw} + q_{k+1}^{raw} = p_k^2 - p_k q_k + q_k^2 + 3p_k q_k = (p_k + q_k)^2.
+
+Let S_k = p_k + q_k (with p_k,q_k reduced). If g_{k+1} = gcd(p_{k+1}^{raw},q_{k+1}^{raw}) then
+S_{k+1} = (p_{k+1}^{raw}+q_{k+1}^{raw})/g_{k+1} = S_k^2 / g_{k+1}.
+Note g_{k+1} | 3 (since p_k and q_k are coprime) and g_{k+1}=3 iff 3 | S_k (because p_{k+1}^{raw} ≡ S_k^2 (mod 3)). Since S_1 = 25+11 = 36 is divisible by 3, by induction every S_k is divisible by 3, so g_{k+1}=3 for all k≥1. Therefore
+S_{k+1} = S_k^2 / 3,  S_1 = 36.
+
+Solving this recurrence gives
+S_k = 3·12^{2^{\,k-1}}  (check: S_1 = 3·12 = 36, and S_{k+1} = (3·12^{2^{k-1}})^2/3 = 3·12^{2^k}).
+
+Thus m+n = S_{2025} = 3·12^{2^{2024}}. We need this modulo 1000.
+
+Compute modulo 8: 12^{2^{2024}} ≡ 4^{2^{2024}} ≡ 0 (mod 8) (since exponent ≥2), so S ≡ 0 (mod 8).
+
+Compute modulo 125: φ(125)=100, so we reduce the exponent mod 100. 2^{2024} (mod 100): mod 25, 2^{20}≡1 so 2^{2024}≡2^{2024 mod 20}=2^4=16 (mod 25); mod 4 it's 0, so by CRT 2^{2024} ≡16 (mod 100). Hence
+12^{2^{2024}} ≡ 12^{16} (mod 125).
+Compute 12^2 ≡ 19, 12^4 ≡ 19^2 ≡ 111, 12^8 ≡ 111^2 ≡ 71, 12^{16} ≡ 71^2 ≡ 41 (mod 125).
+So S ≡ 3·41 ≡ 123 (mod 125).
+
+Now combine
+x ≡ 0 (mod 8), x ≡ 123 (mod 125).
+Write x = 125k + 123; 125 ≡5 (mod 8), so 5k + 123 ≡ 0 (mod 8) ⇒ 5k + 3 ≡ 0 ⇒ 5k ≡5 ⇒ k ≡1 (mod 8).
+Take k=1 ⇒ x = 125·1 + 123 = 248 (this is the unique residue mod 1000).
+
+Therefore the remainder when m+n is divided by 1000 is \boxed{248}.","Please reason step by step, and put your final answer within \boxed{}.
+The answer is an integer between 0 and 999 inclusive.
+
+Let $x_1, x_2, x_3, \ldots$ be a sequence of rational numbers defined by $x_1 = \frac{25}{11}$ and
+$$x_{k+1} = \frac{1}{3}\left(x_k + \frac{1}{x_k} - 1\right)$$
+for all $k \ge 1$. Then $x_{2025}$ can be expressed as $\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find the remainder when $m + n$ is divided by $1000$.",0,openai/gpt-5-mini,GPT-5-mini (high),248,2
+5656,5656,5656,336,True,MathArena/aime_2025_outputs,MathArena/aime_2025_outputs: 20,20,2.0,0.25,0.10233,51086.0,632.0,"Step 1. Put the circumcircle of ABC as the unit circle in the complex plane. Take
+a = 1 (so A at angle 0), b = e^{i72°}, c = e^{i240°}. (This choice makes the minor arcs AB, BC, CA have measures 72°,168°,120° respectively, which match 2·∠C, 2·∠A, 2·∠B.)
+
+Step 2. For a unit circumcircle we have the orthocenter h = a + b + c, so the nine-point center is
+n = (a + b + c)/2 and the nine-point (circum)radius is 1/2. The midpoints are
+D = (b + c)/2, E = (a + c)/2, F = (a + b)/2; hence D,E,F lie on the circle centered at n with radius 1/2.
+
+Step 3. Parametrize the line BD by points P(t) = D + t(B − D) = ((1+t)b + (1−t)c)/2.  
+P(t) is on the nine-point circle iff |P(t) − n| = 1/2. After simplification this is equivalent to
+|t(b − c) − a| = 1. One solution is t = 0 (giving D); the other solution satisfies
+t(b − c) − a = e^{i132°}.
+Thus the second intersection G satisfies
+NG = (t(b − c) − a)/2 = (1/2)e^{i132°},
+so the direction (central angle at n) of G is 132°.
+
+Step 4. The same computation for AE and AF (parametrizing those lines analogously) gives
+NH = (1/2)e^{-i12°} and NJ = (1/2)e^{i12°},
+so the central angles (measured from the positive x–axis through n) of H and J are −12° (i.e. 348°) and 12°, respectively.
+
+Step 5. The three medial vertices have central angles
+F = 60°, D = 180°, E = 252° (these come from the geometry of the medial triangle / the above placements).
+Putting all six points in order around the nine-point circle we get the central angles
+F = 60°, G = 132°, D = 180°, E = 252°, H = 348°, J = 12°.
+
+Hence the minor arcs (in degrees) are
+DE = 252° − 180° = 72°,
+HJ = 12° − (−12°) = 24°,
+FG = 132° − 60° = 72°.
+
+Finally compute
+wideparen{DE} + 2·wideparen{HJ} + 3·wideparen{FG} = 72 + 2·24 + 3·72 = 72 + 48 + 216 = 336.
+
+Therefore the requested sum is \boxed{336}.","Please reason step by step, and put your final answer within \boxed{}.
+The answer is an integer between 0 and 999 inclusive.
+
+Suppose $\triangle ABC$ has angles $\angle BAC = 84^\circ$, $\angle ABC = 60^\circ$, and $\angle ACB = 36^\circ$. Let $D$, $E$, and $F$ be the midpoints of sides $\overline{BC}$, $\overline{AC}$, and $\overline{AB}$, respectively. The circumcircle of $\triangle DEF$ intersects $\overline{BD}$, $\overline{AE}$, and $\overline{AF}$ at points $G$, $H$, and $J$, respectively. The points $G$, $D$, $E$, $H$, $J$, and $F$ divide the circumcircle of $\triangle DEF$ into six minor arcs, as shown. Find $\wideparen{DE} + 2 \cdot \wideparen{HJ} + 3 \cdot \wideparen{FG}$, where the arcs are measured in degrees.
+
+\begin{tikzpicture}[scale=1.2]
+    \coordinate (B) at (0,0);
+    \coordinate (C) at (6,0);
+    \coordinate (A) at (1.78,3.07);
+    
+    \coordinate (D) at ($(B)!0.5!(C)$);
+    \coordinate (E) at ($(A)!0.5!(C)$);
+    \coordinate (F) at ($(A)!0.5!(B)$);
+    
+    \draw (A) -- (B) -- (C) -- cycle;
+
+    \fill (A) circle (2pt) node[above] {$A$};
+    \fill (B) circle (2pt) node[below] {$B$};
+    \fill (C) circle (2pt) node[below] {$C$};
+
+    \fill (D) circle (2pt) node[below] {$D$};
+    \fill (E) circle (2pt) node[right] {$E$};
+    \fill (F) circle (2pt) node[left] {$F$};
+
+    \draw (D) -- (E) -- (F) -- cycle;
+
+    \coordinate (O) at (2.39,1.38);
+    
+    \draw (O) circle (1.51);
+
+    \coordinate (G) at (1.72, 0.03);
+    \coordinate (J) at (1.5, 2.6);
+    \coordinate (H) at (2.08, 2.85);
+
+    \fill (G) circle (2pt) node[below] {$G$};
+    \fill (H) circle (2pt) node[above] {$H$};
+    \fill (J) circle (2pt) node[above left] {$J$};
+\end{tikzpicture}
+",0,openai/gpt-5-mini,GPT-5-mini (high),336,4
+5684,5684,5684,82,True,MathArena/aime_2025_outputs,MathArena/aime_2025_outputs: 18,18,2.0,0.25,0.013657,6791.0,300.0,"Step 1. Label the squares A (lower-left), B (lower-right), C (upper-left), D (upper-right). Let the four interior unit edges be
+a = the vertical edge between A and B,
+b = the vertical edge between C and D,
+c = the horizontal edge between A and C,
+d = the horizontal edge between B and D.
+Each of a,b,c,d is 1 if red and 0 if blue.
+
+Step 2. For square A the other two (boundary) edges must satisfy
+(boundary sum for A) = 2 − (a + c).
+Similarly for B: (boundary sum) = 2 − (a + d); for C: 2 − (b + c); for D: 2 − (b + d).
+For a pair of boundary edges whose sum must equal s, the number of 0–1 choices is
+1 if s = 0 or 2, and 2 if s = 1.
+Define f(s) = 1 for s ∈ {0,2} and f(1) = 2.
+
+Step 3. For a fixed interior choice (a,b,c,d) the number of completions is
+f(2−(a+c))·f(2−(a+d))·f(2−(b+c))·f(2−(b+d)).
+Since f(2−x)=f(x) (f(0)=f(2)=1, f(1)=2), this equals
+f(a+c)·f(a+d)·f(b+c)·f(b+d).
+
+Step 4. Note f(x+y)=2 exactly when x≠y, and =1 when x=y. Thus the product equals 2^{N}, where N is the number of unequal pairs among (a,c),(a,d),(b,c),(b,d). So the total number is
+N_total = sum_{a,b,c,d∈{0,1}} 2^{(a⊕c)+(a⊕d)+(b⊕c)+(b⊕d)}.
+
+Group the sum by (c,d): for fixed c,d,
+S(c,d) = sum_{x∈{0,1}} 2^{(x⊕c)+(x⊕d)} = {1+4=5 if c=d, 2+2=4 if c≠d}.
+Hence for each (c,d) we get S(c,d)^2 choices (because a and b give the same factor), so
+N_total = 2·5^2 + 2·4^2 = 2·25 + 2·16 = 50 + 32 = 82.
+
+Therefore the number of colorings is \boxed{82}.","Please reason step by step, and put your final answer within \boxed{}.
+The answer is an integer between 0 and 999 inclusive.
+
+Four unit squares form a $2\times 2$ grid. Each of the $12$ unit line segments forming the sides of the squares is colored either red or blue in such a way that each unit square has $2$ red sides and $2$ blue sides. One example is shown below (red is solid, blue is dashed). Find the number of such colorings.
+
+\begin{tikzpicture}
+    \foreach \x in {0,1} {
+        \foreach \y in {0,1} {
+            \draw[dashed, blue, very thick] (\x, \y) rectangle ++(1,1);
+        }
+    }
+    
+    \draw[red, very thick] (1,2) -- (2,2);
+    \draw[red, very thick] (1,1) -- (1,2);
+    \draw[red, very thick] (0,1) -- (1,1);
+    \draw[red, very thick] (2,0) -- (2,1);
+    \draw[red, very thick] (1,0) -- (2,0);
+    \draw[red, very thick] (0,0) -- (1,0);
+\end{tikzpicture}",0,openai/gpt-5-mini,GPT-5-mini (high),82,5
+19960,19960,19960,5*sqrt(3)/2,False,MathArena/cmimc_2025_outputs,MathArena/cmimc_2025_outputs: 23,23,2.0,0.25,0.00985525,4904.0,189.0,"Step 1. Place AB on the x-axis with A = (0,0) and B = (1,0). The circles centered at A and B with radius 1 meet at
+C and D. Their x-coordinate is 1/2 and their y-coordinates are ±sqrt(1 − (1/2)^2) = ±√3/2. Thus
+C = (1/2, √3/2), D = (1/2, −√3/2), and CD = √3.
+
+Step 2. Circles centered at C and D with radius CD = √3 meet at points on the perpendicular bisector of CD (the x-axis), at
+x = 1/2 ± √( (√3)^2 − (CD/2)^2 ) = 1/2 ± 3/2, so
+E = (2,0) and F = (−1,0). Hence EF = 3.
+
+Step 3. Circles centered at E and F with radius 3 meet at points with x = 1/2 and y = ±√(9 − (3/2)^2) = ±(3√3)/2. Thus
+G = (1/2, 3√3/2), H = (1/2, −3√3/2).
+
+We need the area of pentagon A C F H E with vertices (in order)
+A = (0,0), C = (1/2, √3/2), F = (−1,0), H = (1/2, −3√3/2), E = (2,0).
+
+Step 4. Use the shoelace formula. Let s = √3. Compute
+sum x_i y_{i+1} = 0·(s/2) + (1/2)·0 + (−1)·(−3s/2) + (1/2)·0 + 2·0 = 3s/2,
+sum y_i x_{i+1} = 0·(1/2) + (s/2)·(−1) + 0·(1/2) + (−3s/2)·2 + 0·0 = −7s/2.
+
+Difference = 3s/2 − (−7s/2) = 5s, so area = (1/2)·5s = 5√3/2.
+
+### Final answer
+
+The final answer is \boxed{\frac{5\sqrt{3}}{2}}.","Please reason step by step, and put your final answer within \boxed{}. Thus, format your final answer as follows:
+
+### Final answer
+
+The final answer is \boxed{your final answer}.
+
+Let $A B$ be a segment of length $1$. Let $\odot A, \odot B$ be circles with radius $\overline{A B}$ centered at $A, B$. Denote their intersection points $C, D$. Draw circles $\odot C, \odot D$ with radius $\overline{C D}$. Denote the intersection points of $\odot C$ and $\odot D$ by $E, F$. Draw circles $\odot E, \odot F$ with radius $\overline{E F}$ and denote their intersection points $G, H$.
+
+Compute the area of the pentagon $A C F H E$.",0,openai/gpt-5-mini,GPT-5-mini (high),\frac{11\sqrt{3}}{4},3
+19980,19980,19980,2422.5,False,MathArena/cmimc_2025_outputs,MathArena/cmimc_2025_outputs: 1,1,2.0,0.25,0.0070365,3499.0,154.0,"Step 1: Find finish times of Alice, Bob, and Charlie.
+- Alice: 1 mile / 8 mph = 1/8 h = 0.125 h.
+- Bob: 1 mile / 4 mph = 1/4 h = 0.25 h.
+- Charlie: 1 mile / 2 mph = 1/2 h = 0.5 h.
+
+Step 2: Dave's initial speed is half of Charlie's, so v0 = 1 mph.
+
+Step 3: At Alice's finish (t = 1/8 h) Dave has run 1 * 1/8 = 1/8 mile, then doubles to 2 mph.
+
+Step 4: At Bob's finish (t = 1/4 h) Dave runs an additional 2 * (1/4 - 1/8) = 2 * 1/8 = 1/4 mile, so total = 1/8 + 1/4 = 3/8 mile, then doubles to 4 mph.
+
+Step 5: Remaining distance after Bob finishes = 1 - 3/8 = 5/8 mile. At 4 mph this takes (5/8)/4 = 5/32 h. So Dave finishes at time 1/4 + 5/32 = 13/32 h = 0.40625 h = 24 minutes 22.5 seconds.
+
+### Final answer
+
+The final answer is \boxed{\tfrac{13}{32}\ \text{hours} \approx 0.40625\ \text{hours} = 24\ \text{minutes }22.5\ \text{seconds}}.","Please reason step by step, and put your final answer within \boxed{}. Thus, format your final answer as follows:
+
+### Final answer
+
+The final answer is \boxed{your final answer}.
+
+Four runners are preparing to begin a $1$-mile race from the same starting line. When the race starts, runners Alice, Bob, and Charlie all travel at constant speeds of $8 \mathrm{mph}, 4 \mathrm{mph}$, and $2$ mph, respectively. The fourth runner, Dave, is initially half as slow as Charlie, but Dave has a superpower where he suddenly doubles his running speed every time a runner finishes the race. How many hours does it take for Dave to finish the race?",0,openai/gpt-5-mini,GPT-5-mini (high),\frac{13}{32},7
+23988,23988,24396,1 + sqrt(3),True,MathArena/brumo_2025_outputs,MathArena/brumo_2025_outputs: 17,17,2.0,0.25,0.01634225,8161.0,81.0,"Let the common side length be s (we will set x = s at the end). Place square ABCD with A = (0,0), B = (s,0), C = (s,s), D = (0,s). Let the other square AEFG be obtained from A by a rotation; then the segment EF meets the top side CD (the line y = s) at the other intersection point O of the two squares.
+
+Parametrize the segment EF: with angle θ for AE, one gets
+E = s(cosθ, sinθ), F = s(cosθ − sinθ, sinθ + cosθ),
+so points on EF are
+(x(t),y(t)) = s(cosθ − t sinθ, sinθ + t cosθ), 0 ≤ t ≤ 1.
+The intersection with y = s occurs when sinθ + t cosθ = 1, so
+t = (1 − sinθ)/cosθ,
+and the x-coordinate of O is
+x_O = s(cosθ − t sinθ) = s(1 − sinθ)/cosθ.
+
+Since C = (s,s) and O = (x_O,s), we have CO = s − x_O. Given CO = 2,
+x_O = s − 2.
+
+Also OA^2 = x_O^2 + s^2. Given OA = 2√2, we have
+(s − 2)^2 + s^2 = (2√2)^2 = 8.
+Thus
+2s^2 − 4s + 4 = 8 ⇒ 2s^2 − 4s − 4 = 0 ⇒ s^2 − 2s − 2 = 0.
+
+Solving gives s = 1 ± √3, and taking the positive root:
+s = 1 + √3.
+
+Therefore the requested x equals 1 + √3:
+\boxed{x = 1 + \sqrt{3}}.","Please reason step by step, and put your final answer within \boxed{}.
+
+Two squares, $A B C D$ and $A E F G$, have equal side length $x$. They intersect at $A$ and $O$. Given that $C O=2$ and $O A=2 \sqrt{2}$, what is $x$ ?",0,openai/gpt-5-mini,GPT-5-mini (high),1+\sqrt{3},6
+24056,24056,24464,924,True,MathArena/brumo_2025_outputs,MathArena/brumo_2025_outputs: 7,7,2.0,0.25,0.0023885,1182.0,98.0,"Step 1. Let the numbers of balls in the odd-labeled bins 1,3,5,7 be 2a1+1,2a2+1,2a3+1,2a4+1 (each ai ≥ 0), and in the even-labeled bins 2,4,6 be 2b1,2b2,2b3 (each bj ≥ 0).
+
+Step 2. The total is
+(2a1+1)+(2a2+1)+(2a3+1)+(2a4+1)+2b1+2b2+2b3 = 16,
+so 4 + 2(Σai + Σbj) = 16 ⇒ Σai + Σbj = 6.
+
+Step 3. The number of nonnegative integer solutions to x1+...+x7 = 6 is C(6+7−1,7−1) = C(12,6) = 924.
+
+Final answer: \boxed{924}","Please reason step by step, and put your final answer within \boxed{}.
+
+Bruno the Bear is tasked to organize $16$ identical brown balls into $7$ bins labeled 1-7. He must distribute the balls among the bins so that each odd-labeled bin contains an odd number of balls, and each even-labeled bin contains an even number of balls (with $0$ considered even). In how many ways can Bruno do this?",0,openai/gpt-5-mini,GPT-5-mini (high),924,8
