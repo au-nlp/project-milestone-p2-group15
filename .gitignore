@@ -2,3 +2,4 @@
 azure
 api_key.txt
 .env
+data/*
