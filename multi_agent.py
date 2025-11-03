@@ -62,6 +62,7 @@ You proposal cannot be in this this list. Try again and submit a new unique answ
 
 
 def conversation(n_steps: int, problem: Problem, model: Model):
+      raw_info = []
       problem.reset_cycle()
       roles = problem.all_roles
       messages =[
@@ -71,8 +72,9 @@ def conversation(n_steps: int, problem: Problem, model: Model):
         print(f"\nSTEP {step}: \n")
         next_agent = problem.next_agent()
         reply, raw = model.send_msg_and_get_contnent(messages+[{"role": "user", "content": f"What do you say, {next_agent}"}])
+        raw_info.append(raw)
         print(f"{next_agent}: {reply}")
         messages.append({"role": "assistant", "content": reply})
-      return messages
+      return messages, raw
 # messages = conversation(2, twoplustwo)
 
