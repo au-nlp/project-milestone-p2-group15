@@ -1,3 +1,6 @@
 .venv
+azure
 .env
 azure/*
+data/all_answers_pd/
+api_key.txt
