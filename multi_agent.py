@@ -86,6 +86,16 @@ def conversation(model:Model, name:str, n_steps: int, problem: Problem, wait:int
       return messages, raw, path
 # messages = conversation(2, twoplustwo)
 
+rater_prompt = (
+    """You have gone through several different choices for an answer. While the rejector rejected all of the answers, one among them is actually correct.
+    Your job is to go through all of these answers using the knowledge you have acquired, try to argue how each of the answers could be true,
+    then, rate and rank these answers. I want to see a list of all answers ranked on plausibility."""
+)
+
+def rank_answer(model:Model, conversation: list[str]):
+    reply, raw = model.send_msg_and_get_contnent(conversation+[{"role": "user", "content": f"{rater_prompt}"}])
+    print(f"{reply}")
+    return reply, raw
 
 
 def save_conv(name: str, messages: list[dict[str, str]], raw) -> None:
@@ -104,4 +114,3 @@ def load_conv(base: str | Path) -> tuple[list, list]:
     with open(base / "raw.json") as f2:
         raw = json.load(f2)
     return messages, raw
-
