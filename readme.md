@@ -32,7 +32,7 @@ In future, we will add more nuance to the roles where we might test the possibil
 
 ## Code
 
-For the preprocessing of the dataset as well as a few visualizations, we refer to the notebook [main.py](main.py). In addition, we have provided a short demo of our method in action, used on the *Deepseek-R1* model. We showcase two problems that the model, when tested in the competitions, never got those right even once; but, with this method, it can solve those problems.
+For the preprocessing of the dataset as well as a few visualizations, we refer to the notebook [main.ipynb](main.ipynb). In addition, we have provided a short demo of our method in action, used on the *Deepseek-R1* model. We showcase two problems that the model, when tested in the competitions, never got those right even once; but, with this method, it can solve those problems.
 
 ## Timeline
 
