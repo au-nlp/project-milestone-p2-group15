@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from itertools import cycle
 import textwrap
-from itertools import cycle
+from time import sleep
+import json
+from pathlib import Path
 
 from azure_api import Model
 @dataclass
@@ -61,20 +63,45 @@ You proposal cannot be in this this list. Try again and submit a new unique answ
   
 
 
-def conversation(n_steps: int, problem: Problem, model: Model):
-      raw_info = []
-      problem.reset_cycle()
-      roles = problem.all_roles
-      messages =[
-          {"role": "system", "content": role.instruction()} for role in roles
-        ] + [{"role": "user", "content": problem.pose_problem()}]
+def conversation(model:Model, name:str, n_steps: int, problem: Problem, wait:int = 5, continue_from: str | None = None):
+      if continue_from is None:
+        problem.reset_cycle()
+        roles = problem.all_roles
+        raws = []
+        messages =[
+            {"role": "system", "content": role.instruction()} for role in roles
+          ] + [{"role": "user", "content": problem.pose_problem()}]
+
+      else:
+        messages, raws = load_conv(continue_from)  
+
       for step in range(n_steps):
         print(f"\nSTEP {step}: \n")
         next_agent = problem.next_agent()
         reply, raw = model.send_msg_and_get_contnent(messages+[{"role": "user", "content": f"What do you say, {next_agent}"}])
-        raw_info.append(raw)
+        raws.append(raw)
         print(f"{next_agent}: {reply}")
         messages.append({"role": "assistant", "content": reply})
-      return messages, raw
+        path = save_conv(name=name, raw=raws, messages=messages)
+      return messages, raw, path
 # messages = conversation(2, twoplustwo)
+
+
+
+def save_conv(name: str, messages: list[dict[str, str]], raw) -> None:
+    base = Path("data") / "conversations" / name
+    base.mkdir(parents=True, exist_ok=True)
+
+    (base / "message.json").write_text(json.dumps(messages, indent=2))
+    (base / "raw.json").write_text(json.dumps([r.model_dump_json() for r in raw], indent=2))
+
+    return base
+
+def load_conv(base: str | Path) -> tuple[list, list]:
+    base = Path(base)
+    with open(base / "message.json") as f1:
+        messages = json.load(f1)
+    with open(base / "raw.json") as f2:
+        raw = json.load(f2)
+    return messages, raw
 
