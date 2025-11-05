@@ -24,4 +24,4 @@ Our contributions are twofold. Firstly, we demonstrate that current models are c
 
 Secondly, we demonstrate that the raw performance of a selected set of models is increased by making the model map out the most plausible answer out of the subset of answers it had generated previously.
 
-This directly addresses one of the issues that the authors of the MathArena competition (cite paper) where models get stuck on single 
+This directly addresses one of the core issues that the authors of the MathArena competition mentioned (cite paper), where models get stuck/too confident on a single answer and cannot continue to explore new answers.
