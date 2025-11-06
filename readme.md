@@ -49,6 +49,8 @@ For this project, we propose the following tentative timeline
 
 - [Evaluating LLMs on Uncontaminated Math Competitions](https://arxiv.org/pdf/2505.23281)
 - [A Survey Of Self-Evolving Agents: On Path To Artificial Super Intelligence](https://arxiv.org/abs/2507.21046)
+- [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/pdf/2201.11903)
+- [Let’s Verify Step by Step](https://arxiv.org/pdf/2305.20050)
 
 ## Appendix
 
