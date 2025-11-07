@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import os
-import requests
 from datasets import load_dataset
 from math_arena_datasets import categories_2025
 import pandas as pd
@@ -10,8 +9,6 @@ from openai import AzureOpenAI
 import re
 
 load_dotenv()
-API_URL = os.environ.get("AZURE_OPENAI_ENDPOINT")
-API_KEY = os.environ.get("AZURE_OPENAI_API_KEY")
 
 def build_prompt(examples, query):
     categories = [
@@ -71,6 +68,8 @@ df["problem_type"] = df["problem_type"].apply(lambda x: x[0] if isinstance(x, li
 
 # Drop null values
 df = df[["problem", "problem_type"]].dropna()
+
+# Get the train-test values and save them in a CSV file for future use 
 
 # Train test split
 train_df, test_df = pd.read_csv('data/problem_type_data.train.csv'), pd.read_csv('data/problem_type_data.test.csv')
