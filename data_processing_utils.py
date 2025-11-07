@@ -11,7 +11,7 @@ def create_unique_problem_label_and_return_df(data_dict: dict) -> pd.DataFrame:
   all_data = []
   for competition, dataset in data_dict.items():
     df: pd.DataFrame = dataset["train"].to_pandas()
-    df[UNIQUE_PROBLEM_LABEL] = df[PROBLEM_IDX].map(lambda x : f"{competition.replace("_outputs", "")}: {x}") # Apex: 1
+    df[UNIQUE_PROBLEM_LABEL] = df[PROBLEM_IDX].map(lambda problem_idx : f"{competition.replace("_outputs", "")}: {problem_idx}") # Apex: 1, # AIME 1
     df[COMPETITION] = competition
     all_data.append(df)
   return pd.concat(all_data)
@@ -26,7 +26,6 @@ def drop_judge_column_rows(df: pd.DataFrame) -> pd.DataFrame:
   return df[df[judge_columns].isna().all(axis=1)]
 
 def drop_judge_columns(df:pd.DataFrame) -> pd.DataFrame:
-    print("here")
     judge_columns = [x for x in df.columns if "judge" in x]
     return df.drop(judge_columns, axis=1)
 
@@ -51,7 +50,7 @@ def plot_missing(missing_ratio: pd.DataFrame) -> pd.DataFrame:
 
 
 
-def prune_missing(df: pd.Dataframe, missing_ratio: pd.DataFrame, threshold: float) -> pd.DataFrame:
+def prune_missing(df: pd.DataFrame, missing_ratio: pd.DataFrame, threshold: float) -> pd.DataFrame:
   cols_to_keep = []
   for col, ratio in missing_ratio.to_dict().items():
     if ratio<=threshold:
