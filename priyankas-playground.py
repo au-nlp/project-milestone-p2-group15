@@ -13,7 +13,6 @@ load_dotenv()
 API_URL = os.environ.get("AZURE_OPENAI_ENDPOINT")
 API_KEY = os.environ.get("AZURE_OPENAI_API_KEY")
 
-# --- Build the few-shot prompt ---
 def build_prompt(examples, query):
     categories = [
         "Arithmetic", "Algebra", "Geometry",
@@ -54,13 +53,12 @@ def classify_with_azure(prompt):
     
 def flatten_concatenated_labels(x):
     x = str(x).strip()
-    # Split by uppercase letters (assumes each label starts with a capital)
     labels = re.findall(r'[A-Z][a-zA-Z\s]*', x)
     if labels:
-        return labels[0].strip()  # first label
+        return labels[0].strip()
     return x
 
-# --- Load and merge all datasets ---
+# Merge datasets
 dfs = []
 for path in categories_2025:
     dataset_dict = load_dataset(path)
