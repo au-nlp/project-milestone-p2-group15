@@ -2,7 +2,7 @@
 # PROMPTING STRATEGIES TO ENCOURAGE EXPLORATION OF DIFFERENT METHODS ON DIFFERENT LARGE-LANGUAGE MODELS
 Group 15
 
-## Abstract (150)
+## Abstract
 
 In this project, we demonstrate an alternative prompting strategy to the classic chain-of-thought prompting when dealing with fixed-answer math problems. The prompting strategy is a multi-agent/multi-role strategy for structuring how the model reasons and force the model to show a vast solution space. Among our most effective role-based strategy is the "Solver + Rejector" strategy where the "Solver" role must generate a set of unique answers. Then, the rejector's job is to reject whatever the solver outputs and encourages to explore further to solve the problem. This is to counteract a common issues where a model gets stuck on early suggestions. 
 
