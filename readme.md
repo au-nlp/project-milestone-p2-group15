@@ -4,7 +4,9 @@ Group 15
 
 ## Abstract (150)
 
-Abstract: A 150 word description of the project idea and goals. What’s the motivation behind your project? What story would you like to tell, and why?
+In this project, we demonstrate an alternative prompting strategy to the classic chain-of-thought prompting when dealing with fixed-answer math problems. The prompting strategy is a multi-agent/multi-role strategy for structuring how the model reasons and force the model to show a vast solution space. Among our most effective role-based strategy is the "Solver + Rejector" strategy where the "Solver" role must generate a set of unique answers. Then, the rejector's job is to reject whatever the solver outputs and encourages to explore further to solve the problem. This is to counteract a common issues where a model gets stuck on early suggestions. 
+
+Finally, the Model is asked to rank each of the answers it had suggested so far which we show, can be used to solve problems in the dataset that the model couldn't previously solve.
 
 
 ## Contributions
@@ -34,6 +36,8 @@ In future, we will add more nuance to the roles where we might test the possibil
 For the preprocessing of the dataset as well as a few visualizations, we refer to the notebook [main.ipynb](main.ipynb). In addition, we have provided a short demo of our method in action, used on the *Deepseek-R1* model. We showcase two problems that the model, when tested in the competitions, never got those right even once; but, with this method, it can solve those problems.
 
 ## Timeline
+
+In the Bibliography, we have listed a number of sources. Since our P3 delivery requires a rigourous testing setup, we will use the papers for inspiration. 
 
 For this project, we propose the following tentative timeline
 
