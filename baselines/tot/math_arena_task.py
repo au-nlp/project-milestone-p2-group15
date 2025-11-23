@@ -12,9 +12,6 @@ class MathAarenaToTTask(Task):
       stops: stops model generation is the stops token is generated - is there to keep the steps short. Ex stops = ['\n'] or stops = [";"]
       problem_descr: The problem the model should solve
       answer: the answer to the problem (only used at the very end to check if it got the final right answer)
-      
-
-    
     """
     self.steps = steps
     self.data = [problem_descr]
@@ -90,7 +87,7 @@ current_steps {current_steps}
 """
 )
 
-value_promt = lambda input:  f"""Given the current partial reasoning, evaluate if this is going in the right direction. 
+value_promt = lambda problem, current_steps:  f"""Given the current partial reasoning, evaluate if this is going in the right direction. 
 Responds with one word (sure/likely/impossible)
 
 {example_problem}
@@ -119,7 +116,8 @@ Alice eats half of 5 apples, so now she has 2.5 left.
 round(3.5)= 3
 sure
 
-{input}
+{problem}
+{current_steps}
 """
 
 value_last_step_prompt = lambda problem, answer: f'''Use mathematical reasoning. Given an input and an answer, give a judgement (sure/impossible) if the answer is correct, i.e. it reasoning is sound and achives the right answer.

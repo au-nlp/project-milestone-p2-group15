@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 from datasets import load_dataset
-from math_arena_datasets import categories_2025, problem_datasets_2025
+from data_processing.math_arena_datasets import categories_2025, problem_datasets_2025
 import pandas as pd
 from openai import AzureOpenAI
 import re

@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from datasets import load_dataset
-from math_arena_datasets import problem_datasets_2025
+from data_processing.math_arena_datasets import problem_datasets_2025
 import pandas as pd
 import re
 from typing import Any
