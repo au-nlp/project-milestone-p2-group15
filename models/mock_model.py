@@ -1,5 +1,6 @@
-from model_base import ModelBase
-
+from models.model_base import ModelBase
+import json
+from types import SimpleNamespace
 class MockModel(ModelBase):
   """A model outputing a mock string - no need API call"""
 
@@ -7,11 +8,28 @@ class MockModel(ModelBase):
     pass 
 
   def send_msg_and_get_contnent(self, msg: list[dict[str, str]]) -> tuple[str, dict]:
-    raw = {
-      "completion_tokens":11348,
-       "prompt_tokens":2112,
-       "total_tokens":13460,
+    raw =""" 
+    {
+    "id": "some_id",
+    "model": "gpt-5",
+    "choices": [
+      {
+        "index": 0,
+        "finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "A mock response"
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 123,
+      "completion_tokens": 456,
+      "total_tokens": 789
     }
+  }
+  """
+
     response = [
     {
       "role": "system",
@@ -31,15 +49,15 @@ class MockModel(ModelBase):
     },
       ]
   
-    return response, raw
+    return response, json.loads(raw, object_hook=lambda d: SimpleNamespace(**d))
   
 
 
 class MockCompletions:
   def create(model, messages):
-    return {}
+    return MockModel().send_msg_and_get_contnent(msg = [])[1]
 class MockChat:
-  completion =  MockCompletions()
+  completions =  MockCompletions()
 
 
 

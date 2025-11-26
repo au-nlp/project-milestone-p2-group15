@@ -6,6 +6,7 @@ from functools import lru_cache
 
 completion_tokens = prompt_tokens = 0
 
+from time import sleep
 
 
 def promt_model(
@@ -22,13 +23,27 @@ def promt_model(
 
     client = make_client(key_env_name, endpoint_env_name, api_version, client_type)
 
-    @backoff.on_exception(backoff.expo, openai.error.OpenAIError)
     def completions_with_backoff(**kwargs):
-        return client.chat.completions.create(kwargs)
+        result = None
+        
+        for attempt in range(10):
+            try:
+                delay = attempt
+                sleep(delay)
+                print(">>>tries to call client.. Attempt>", attempt, "<<<")
+                result = client.chat.completions.create(kwargs)
+                print(">>>succesfully called client<<<")
+                break
+            except Exception as e:
+                print(f">>>failed call to client., {e}<<<")
+
+        assert result is not None, f">>>All 10 attemps to call client failed<<<"
+        return result
+    
 
     def promt_model(prompt, model="gpt-4",  n=1) -> list:
         messages = [{"role": "user", "content": prompt}]
-        return chatgpt(messages, model=model, max_tokens=max_tokens, n=n)
+        return chatgpt(messages, model=model, n=n)
         
     def chatgpt(messages, model="gpt-4",  n=1) -> list:
         global completion_tokens, prompt_tokens
@@ -36,7 +51,7 @@ def promt_model(
         while n > 0:
             cnt = min(n, 20)
             n -= cnt
-            res = completions_with_backoff(model=model, messages=messages,  n=cnt, stop=stop)
+            res = completions_with_backoff(model=model, messages=messages,  n=cnt)
             outputs.extend([choice.message.content for choice in res.choices])
             # log completion tokens
             completion_tokens += res.usage.completion_tokens

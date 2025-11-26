@@ -1,9 +1,10 @@
 import itertools
 import numpy as np
 from functools import partial
-from tot.tasks.base import Task
+from pathlib import Path 
+from baselines.tot.tree_of_thought_llm_master.src.tot.tasks.base import Task
 from typing import Callable
-from tot.models import promt_model
+from baselines.tot.tree_of_thought_llm_master.src.tot.models import promt_model
 from openai import AzureOpenAI
 
 
@@ -23,7 +24,7 @@ class BFSToTSolver():
             key_env_name=key_env_name,
             endpoint_env_name=endpoint_env_name,
             api_version=api_version, 
-            client_type=AzureOpenAI,
+            client_type=client_type,
             model=model_name,
             promt=promt,
             n=n
@@ -86,7 +87,7 @@ class BFSToTSolver():
         n_generate_sample: int,
         prompt_sample: str,
     ) -> list[str]:
-        prompt = task.cot_promt_wrap(x, y)
+        prompt = task.standard_prompt_wrap(x, y)
         samples = self.promt_model(prompt, n=n_generate_sample)
         return [y + _ for _ in samples]
 

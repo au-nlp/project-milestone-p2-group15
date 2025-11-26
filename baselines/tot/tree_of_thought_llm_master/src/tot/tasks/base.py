@@ -6,8 +6,6 @@ class Task(ABC):
     value_cache: list 
     steps: list 
 
-    def __init__(self):
-        pass
 
     @abstractmethod
     def __len__(self) -> int:
@@ -21,28 +19,33 @@ class Task(ABC):
     def test_output(self, idx: int, output: str):
         pass
 
-    @abstractmethod
     @staticmethod
-    def value_promt_wrap(x: str, y: str) -> str:
+    @abstractmethod
+    def standard_prompt_wrap(question: str, current_steps:str='') -> str:
         pass
 
-    @abstractmethod
     @staticmethod
-    def value_outputs_unwrap(x: str, y: str, value_outputs: list) -> str:
+    @abstractmethod
+    def vote_outputs_unwrap(vote_outputs: list, n_candidates: int) -> list:
         pass
 
-    @abstractmethod
     @staticmethod
-    def cot_promt_wrap(x: str, y: str) -> str:
+    @abstractmethod
+    def compare_prompt_wrap(x: str, ys: list) -> str: 
         pass
 
-    @abstractmethod
     @staticmethod
+    def compare_output_unwrap(compare_output: str):
+        pass
+
+    @staticmethod
+    @abstractmethod
     def vote_prompt_wrap(x: str, ys: list[str]) -> str:
         pass
-    @abstractmethod
+
     @staticmethod
-    def vote_outputs_unwrap(x: str, ys: list[str]) -> str:
+    @abstractmethod
+    def vote_outputs_unwrap(vote_outputs: list, n_candidates: int) -> list:
         pass
 
     
