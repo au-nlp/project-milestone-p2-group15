@@ -1,6 +1,5 @@
 import os
 import openai
-import backoff 
 from openai import AzureOpenAI
 from functools import lru_cache
 
@@ -8,6 +7,7 @@ completion_tokens = prompt_tokens = 0
 
 from time import sleep
 
+mult_response = False
 
 def promt_model(
         key_env_name: str,
@@ -31,13 +31,27 @@ def promt_model(
                 delay = attempt
                 sleep(delay)
                 print(">>>tries to call client.. Attempt>", attempt, "<<<")
-                result = client.chat.completions.create(kwargs)
+                if mult_response:
+                    result = client.chat.completions.create(**kwargs)
+                else:
+                    result = run_one_at_a_time(kwargs)
+
                 print(">>>succesfully called client<<<")
                 break
             except Exception as e:
                 print(f">>>failed call to client., {e}<<<")
 
         assert result is not None, f">>>All 10 attemps to call client failed<<<"
+        return result
+
+    def run_one_at_a_time(kwargs):
+        outputs = []
+        n = kwargs["n"]
+        while n>0:
+            kwargs["n"]=1
+            result = client.chat.completions.create(**kwargs)
+            outputs.append(result.choices[0].message.content)
+            n-=1
         return result
     
 
@@ -60,16 +74,22 @@ def promt_model(
     return promt_model(promt, model, n)
 
 @lru_cache
-def make_client(key_env_name: str, endpoint_env_name: str, api_version: str, client_type) :
+def make_client(key_env_name: str, endpoint_env_name: str | None, api_version: str | None, client_type) :
     api_key = os.getenv(key_env_name) 
-    api_base = os.getenv(endpoint_env_name)
+    if endpoint_env_name:
+        api_base = os.getenv(endpoint_env_name)
+    else:
+        api_base = None
 
-    client = client_type(
-      api_key= api_key,
-      api_version=api_version,
-      azure_endpoint=(api_base)
-    )
-    
+    kwargs = {k: v for k, v in {
+        "api_key": api_key,
+        "api_version": api_version,
+        "azure_endpoint": api_base,
+    }.items() if v is not None}
+
+    client = client_type(**kwargs)
+        
+
     return client
         
 def gpt_usage(backend):

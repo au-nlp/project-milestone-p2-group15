@@ -2,6 +2,11 @@
 from models.mock_model import MockClient
 from baselines.tot.math_arena_tot_setup import ToTConfig, run_math_arena_tot
 if __name__ == "__main__":
+  with open("api_key.txt") as f:
+    api_key = f.read().strip()
+
+
+
   config = ToTConfig(
     key_env_name="something",
     endpoint_env_name="someting",

@@ -123,7 +123,7 @@ example_problem = "Alice has 5 apples. John eates 2, but buys 4 more for Alice. 
 
 
 standard_prompt = lambda question, current_steps: f""" 
-Use mathematical reasoning to solve problems in steps.
+Use mathematical reasoning to solve problems in steps. If you think you have a final answer, format as Answer: [your answer]. If not, just write the step.
 Example qustion:
 Question: {example_problem}
 
