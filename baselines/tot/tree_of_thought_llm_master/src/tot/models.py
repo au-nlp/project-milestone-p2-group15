@@ -7,7 +7,7 @@ completion_tokens = prompt_tokens = 0
 
 from time import sleep
 
-mult_response = False
+mult_response = True # set to False if using something like groq to debug
 
 def promt_model(
         key_env_name: str,
