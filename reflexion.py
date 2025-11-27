@@ -1,14 +1,8 @@
 from dotenv import load_dotenv
-import os, re, string
 from enum import Enum
-from datasets import load_dataset
-from math_arena_datasets import categories_2025
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from time import sleep
-from openai import AzureOpenAI
-from multi_agent import Role, Problem
 from prompt_template import Reflector
+from azure_api import Model
+from multi_agent import Problem
 
 load_dotenv()
 
@@ -28,7 +22,7 @@ class ReflexionStrategy(Enum):
 class ReflexionAgent:
     def __init__(
         self,
-        llm,
+        llm : Model,
         strategy: ReflexionStrategy,
         evaluator_fn,
         reflector_prompt=Reflector,
@@ -61,10 +55,14 @@ class ReflexionAgent:
 
                       Return a short self-reflection that improves the solver.
                   """
-        reflection = self.llm(prompt)
-        self.reflections.append(reflection.strip())
-        return reflection.strip()
-
+        messages = [{"role": "user", "content": prompt}]
+    
+        # call the method on your Model object
+        reply, raw = self.llm.send_msg_and_get_contnent(messages)
+        
+        reflection = reply.strip() if reply else ""
+        self.reflections.append(reflection)
+        return reflection
 
     def solve(self, task: str):
         """
@@ -82,9 +80,10 @@ class ReflexionAgent:
             base_prompt += "\nGive step-by-step solution and a final answer."
 
             print(f"\n=== Attempt {i+1} ===")
-            attempt = self.llm(base_prompt).strip()
+            messages = [{"role": "user", "content": base_prompt}]
+            reply, raw = self.llm.send_msg_and_get_contnent(messages)
+            attempt = reply or ""
             print(attempt)
-
             self.attempts.append(attempt)
 
             # 3) Evaluate
