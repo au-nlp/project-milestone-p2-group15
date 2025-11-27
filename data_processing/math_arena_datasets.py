@@ -44,7 +44,12 @@ output_datasets_2025 = [
     "MathArena/kangaroo_2025_11-12_outputs",
 ]
 
-
+categories_2025 = [
+    "MathArena/aime_2025",
+    "MathArena/hmmt_feb_2025",
+    "MathArena/cmimc_2025",
+    "MathArena/brumo_2025"
+    ]
 PROBLEM = "problem"
 OUTPUTS = "outputs"
 

@@ -7,13 +7,17 @@ from model_base import ModelBase
 class Model(ModelBase):
   model_name: str 
   _send_messages: Callable[[list[dict[str, str]]], dict]
+  num_tokens: dict
 
   def __init__(self, model_name:str, send_messages: Callable[[list[dict[str, str]]], dict]):
     self.model_name = model_name
     self._send_messages = send_messages
+    self.num_tokens = []
 
   def _raw_response(self, msg: list[dict[str, str]]) -> dict:
-    return self._send_messages(msg)
+    result = self._send_messages(msg)
+    self.num_tokens.append(result.usage)
+    return result
   
   def send_msg_and_get_contnent(self, msg: list[dict[str, str]]) -> tuple[str, dict]:
     """returns both the message conent and the raw resonse"""
