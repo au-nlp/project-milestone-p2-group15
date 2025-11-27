@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from enum import Enum
 from prompt_template import Reflector
 from azure_api import Model
-from multi_agent import Problem
 
 load_dotenv()
 
