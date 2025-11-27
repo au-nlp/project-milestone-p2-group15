@@ -11,6 +11,12 @@ from dataclasses import dataclass
 
 @dataclass
 class ToTConfig:
+    """
+    Args:
+      n_generate_sample: controls number of samples the model generats each state
+      n_evaluate_sample: How many timesshould the model vote (to handle randomess)
+      n_select_sample: How many thoughts you keep after an evaluation. Ex if n_generate sample =5, n_select_sample = 2, we prune 3
+    """
     key_env_name: str
     endpoint_env_name: str
     api_version: str
