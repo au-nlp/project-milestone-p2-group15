@@ -92,7 +92,7 @@ class ReflexionAgent:
             print(f"Score: {score}")
             print(f"Feedback: {feedback}")
 
-            if score is True:  # solved!
+            if score == "true":  # solved!
                 return attempt
 
             # 4) If failed — apply reflection
