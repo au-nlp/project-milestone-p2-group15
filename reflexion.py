@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from enum import Enum
 from prompt_template import Reflector
-from azure_api import Model
+from models.azure_api import Model
 
 load_dotenv()
 
