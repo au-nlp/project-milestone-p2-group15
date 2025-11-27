@@ -1,5 +1,8 @@
 .venv
 azure
-api_key.txt
 .env
+azure/*
+api_key.txt
+
 data/*
+!data/conversations/

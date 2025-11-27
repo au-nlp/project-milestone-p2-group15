@@ -1,4 +1,8 @@
+from typing import Literal
+from typing import Any
+from datasets import DatasetDict
 
+from datasets import load_dataset
 
 
 problem_datasets_2025 = [
@@ -46,3 +50,36 @@ categories_2025 = [
     "MathArena/cmimc_2025",
     "MathArena/brumo_2025"
     ]
+PROBLEM = "problem"
+OUTPUTS = "outputs"
+
+
+def load_data_dict(table_type: Literal["problem", "outputs"]):
+    assert table_type in [PROBLEM, OUTPUTS]
+    if table_type == PROBLEM:
+        dataset = problem_datasets_2025
+    if table_type == OUTPUTS:
+        dataset = output_datasets_2025
+
+    data_dict: dict[str, DatasetDict] = {}
+
+    for dataset_name in dataset:
+        data_dict[dataset_name] = load_dataset(f"{dataset_name}")
+    return data_dict
+
+
+def get_all_cols_from_data_dict(data_dict: dict[str, DatasetDict]) -> set[str]:
+    all_column_names: set[str] = set()
+    for name, dataset in data_dict.items():
+        cols = dataset["train"].column_names
+        all_column_names = all_column_names.union(cols)
+
+    return all_column_names
+
+
+def pick_competition_element(n: int, d: dict[DatasetDict]) -> tuple[str, DatasetDict]:
+    i = 0
+    for k, _ in d.items():
+        if i == n:
+            return k, d[k]
+    raise (ValueError(f"{n=} is larger than number of dict eleents"))

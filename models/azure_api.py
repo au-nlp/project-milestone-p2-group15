@@ -2,8 +2,9 @@ from openai import AzureOpenAI
 import os
 from typing import Callable
 
+from model_base import ModelBase
 
-class Model:
+class Model(ModelBase):
   model_name: str 
   _send_messages: Callable[[list[dict[str, str]]], dict]
   num_tokens: dict
