@@ -1,5 +1,5 @@
 import pandas as pd
-from data_processing_utils import UNIQUE_PROBLEM_LABEL 
+from data_processing.data_processing_utils import UNIQUE_PROBLEM_LABEL 
 from typing import Literal
 import pandas as pd
 import matplotlib.pyplot as plt

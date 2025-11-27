@@ -2,10 +2,8 @@ from dataclasses import dataclass
 from itertools import cycle
 import textwrap
 from time import sleep
-import json
-from pathlib import Path
 
-from azure_api import Model
+from models.model_base import ModelBase
 @dataclass
 class Role:
   name: str 
@@ -63,7 +61,7 @@ You proposal cannot be in this this list. Try again and submit a new unique answ
   
 
 
-def conversation(model:Model, name:str, n_steps: int, problem: Problem, wait:int = 5, continue_from: str | None = None):
+def conversation(model:ModelBase, name:str, n_steps: int, problem: Problem, wait:int = 5, continue_from: str | None = None):
       if continue_from is None:
         problem.reset_cycle()
         roles = problem.all_roles
@@ -73,7 +71,7 @@ def conversation(model:Model, name:str, n_steps: int, problem: Problem, wait:int
           ] + [{"role": "user", "content": problem.pose_problem()}]
 
       else:
-        messages, raws = load_conv(continue_from)  
+        messages, raws = ModelBase.load_conv(continue_from)  
 
       for step in range(n_steps):
         print(f"\nSTEP {step}: \n")
@@ -82,7 +80,7 @@ def conversation(model:Model, name:str, n_steps: int, problem: Problem, wait:int
         raws.append(raw)
         print(f"{next_agent}: {reply}")
         messages.append({"role": "assistant", "content": reply})
-        path = save_conv(name=name, raw=raws, messages=messages)
+        path = ModelBase.save_conv(name=name, raw=raws, messages=messages)
       return messages, raw, path
 # messages = conversation(2, twoplustwo)
 
@@ -92,25 +90,9 @@ rater_prompt = (
     then, rate and rank these answers. I want to see a list of all answers ranked on plausibility."""
 )
 
-def rank_answer(model:Model, conversation: list[str]):
+def rank_answer(model:ModelBase, conversation: list[str]):
     reply, raw = model.send_msg_and_get_contnent(conversation+[{"role": "user", "content": f"{rater_prompt}"}])
     print(f"{reply}")
     return reply, raw
 
 
-def save_conv(name: str, messages: list[dict[str, str]], raw) -> None:
-    base = Path("data") / "conversations" / name
-    base.mkdir(parents=True, exist_ok=True)
-
-    (base / "message.json").write_text(json.dumps(messages, indent=2))
-    (base / "raw.json").write_text(json.dumps([r.model_dump_json() for r in raw], indent=2))
-
-    return base
-
-def load_conv(base: str | Path) -> tuple[list, list]:
-    base = Path(base)
-    with open(base / "message.json") as f1:
-        messages = json.load(f1)
-    with open(base / "raw.json") as f2:
-        raw = json.load(f2)
-    return messages, raw
