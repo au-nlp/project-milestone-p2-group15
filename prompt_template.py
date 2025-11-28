@@ -71,3 +71,15 @@ Rules:
   )
 )
 
+Reflexion_Solver = Role(
+  name="Reflexion_Solver",
+  behavior=(
+"""
+You solve problems step by step. If the evaluator flags any mistakes & provides feedback, use it to craft better solutions.
+
+Rules:
+- Give a step by step breakdown of the solution.
+- Incorporate the feedback, reflections from the evaluator
+"""
+    )
+)
