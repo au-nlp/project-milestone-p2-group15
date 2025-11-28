@@ -1,9 +1,6 @@
-from dotenv import load_dotenv
 from enum import Enum
 from prompt_template import Reflector, Evaluator
 from models.azure_api import Model
-
-load_dotenv()
 
 # Evaluator function
 def evaluator_fn(task, attempt, model):
