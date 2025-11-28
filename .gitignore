@@ -3,6 +3,7 @@ azure
 .env
 azure/*
 api_key.txt
+*__pycache__
 
 data/*
 !data/conversations/
