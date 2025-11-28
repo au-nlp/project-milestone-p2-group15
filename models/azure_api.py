@@ -2,7 +2,7 @@ from openai import AzureOpenAI
 import os
 from typing import Callable
 
-from model_base import ModelBase
+from models.model_base import ModelBase
 
 class Model(ModelBase):
   model_name: str 

@@ -1,4 +1,4 @@
-from multi_agent import Role
+from multi_agent.multi_agent import Role
 
 Solver = Role(
   name="Solver",

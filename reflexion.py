@@ -1,9 +1,30 @@
 from dotenv import load_dotenv
 from enum import Enum
-from prompt_template import Reflector
+from prompt_template import Reflector, Evaluator
 from models.azure_api import Model
 
 load_dotenv()
+
+# Evaluator function
+def evaluator_fn(task, attempt, model):
+    prompt = f"""
+                      {Evaluator}
+
+                      Task:
+                      {task}
+
+                      Attempts & reasoning:
+                      {attempt}
+
+                      Return a short self-reflection that improves the solver.
+                  """
+    messages = [{"role": "user", "content": prompt}]
+    
+    # call the method on your Model object
+    feedback, raw = model.send_msg_and_get_contnent(messages)
+    last_line = feedback.strip().split("\n")[-1].lower()
+    score =  "true" if "true" in last_line else "false"
+    return score, feedback
 
 # From the GitHub of refexion: https://github.com/noahshinn/reflexion
 class ReflexionStrategy(Enum):
