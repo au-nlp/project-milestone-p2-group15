@@ -7,7 +7,7 @@ completion_tokens = prompt_tokens = 0
 
 from time import sleep
 
-mult_response = True # set to False if using something like groq to debug
+mult_response = False # set to False if using something like groq to debug
 
 def promt_model(
         key_env_name: str,
@@ -92,6 +92,6 @@ def make_client(key_env_name: str, endpoint_env_name: str | None, api_version: s
 
     return client
         
-def gpt_usage(backend):
+def gpt_usage():
     global completion_tokens, prompt_tokens
     return {"completion_tokens": completion_tokens, "prompt_tokens": prompt_tokens}
