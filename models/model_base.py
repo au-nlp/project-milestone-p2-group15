@@ -4,9 +4,10 @@ from pathlib import Path
 
 class ModelBase(ABC):
   model_name: str 
+  num_tokens: dict
 
   @abstractmethod
-  def send_msg_and_get_contnent(self, msg: list[dict[str, str]]) -> tuple[str, dict]:
+  def send_msg_and_get_contnent(*args) -> tuple[str, dict]:
       pass
 
   @staticmethod
