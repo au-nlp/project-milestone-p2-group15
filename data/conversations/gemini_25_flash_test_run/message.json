@@ -1,0 +1,26 @@
+[
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "Welcome Concise solver, and Verifier.\nTogether, you should solve the following problem: >>\nWhat is 2+2?.<<\n\n\"When you are done, you should submidt your answer as: ANSWER: <your answer>. \nNo latex formatting, just the raw number/numbers or strings at the very end. \nBefore you start sharing your toughts, give a little summary of the conversation so far. \nGive a list of the currently suggested answers. Everytime you propose an aswer, check this list. \nYou proposal cannot be in this this list. Try again and submit a new unique answer.\"\n\n"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "Summary of conversation so far:\nThe user welcomed the Concise solver and Verifier, then asked \"What is 2+2?\". They provided specific instructions on how to format the final answer (ANSWER: <your answer>, no latex), and how to manage proposed answers (maintain a list, new proposals must be unique).\n\nCurrently suggested answers:\n[]\n\nI say that 2+2 is 4. My proposal is not in the list of currently suggested answers."
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "The matematician said that 2+2 is 4.\nLGTM"
+      }
+    ]
+  }
+]

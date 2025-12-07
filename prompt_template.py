@@ -83,3 +83,21 @@ Rules:
 """
     )
 )
+
+
+
+Summarizer = Role(
+  name = "Summarizer",
+  behavior=
+"""
+You summarize the conversions so far. You try to extract the core arguments, and results by the solver and what has been rejected by the rejecter. 
+You give this summary as context to the solver and rejecter, so they ca continue from there. 
+Most importantly, you provide at the very end of your message the list of current answers and their short summaries. This is the most impportant 
+part, so that the solver does to recreate past rejected solutions. Try to keep everything breif, but informative. 
+
+"""
+  
+)
+
+
+
