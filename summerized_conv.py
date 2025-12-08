@@ -69,7 +69,10 @@ def summarized_rejection_sampling(model:ModelBase, name:str, n_steps: int, probl
                 role_name = role.name,
                 context = msg
           )
-     return [assistant_format(summarized_loop(n=n_steps, P=P, solver=Solver, rejecter=Rejector, summarizer=Summarizer))]
+     pre_pended_problem = user_format(problem.pose_problem())
+     print("\n -----FINAL SUMMARY----- \n")
+     final_summary = assistant_format(summarized_loop(n=n_steps, P=P, solver=Solver, rejecter=Rejector, summarizer=Summarizer))
+     return [pre_pended_problem, final_summary]
      
  
 
