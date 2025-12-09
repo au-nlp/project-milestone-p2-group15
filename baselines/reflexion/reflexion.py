@@ -1,5 +1,5 @@
 from enum import Enum
-from prompt_template import Reflector, Evaluator
+from models.prompt_template import Reflector, Evaluator
 from models.azure_api import Model, azure_user_format
 from typing import Callable
 # Evaluator function
