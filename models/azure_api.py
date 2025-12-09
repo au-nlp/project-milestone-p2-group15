@@ -54,3 +54,5 @@ class Client:
       
 
 
+def azure_user_format(promt: str) -> dict:
+  return  {"role": "user", "content": promt}

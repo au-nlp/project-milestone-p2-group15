@@ -3,6 +3,7 @@ from itertools import cycle
 import textwrap
 from time import sleep
 
+from models.google_api import GoogleModel, google_assistant_format, google_user_format
 from models.model_base import ModelBase
 @dataclass
 class Role:
@@ -87,7 +88,10 @@ def conversation(model:ModelBase, name:str, n_steps: int, problem: Problem, wait
 rater_prompt = (
     """You have gone through several different choices for an answer. While the rejector rejected all of the answers, one among them is actually correct.
     Your job is to go through all of these answers using the knowledge you have acquired, try to argue how each of the answers could be true,
-    then, rate and rank these answers. I want to see a list of all answers ranked on plausibility."""
+    then, rate and rank these answers. I want to see a list of all answers ranked on plausibility. 
+    Rules:
+      - Do not submit a new answer. Just rate existing ones. 
+    """
 )
 
 def rank_answer(model:ModelBase, conversation: list[str]):
@@ -96,3 +100,34 @@ def rank_answer(model:ModelBase, conversation: list[str]):
     return reply, raw
 
 
+
+
+
+
+def conversation_google(model:GoogleModel, name:str, n_steps: int, problem: Problem, wait:int = 5, continue_from: str | None = None):
+      if continue_from is None:
+        problem.reset_cycle()
+        roles = problem.all_roles
+        raws = []
+        messages = [google_user_format(problem.pose_problem())]
+
+      else:
+        messages, raws = GoogleModel.load_conv(continue_from)  
+
+      for step in range(n_steps):
+        print(f"\nSTEP {step}: \n")
+        next_agent = problem.next_agent()
+        user_msg = f"\nWhat do you say, {next_agent.name}?\n"
+        reply, raw = model.send_msg_and_get_contnent(messages+[google_user_format(user_msg)], next_agent.instruction())
+        raws.append(raw)
+        print(f"\nAgent: {next_agent}\n {reply}")
+        messages.append(google_assistant_format(reply))
+        path = GoogleModel.save_conv(name=name, raw=raws, messages=messages)
+      print(f"\n{model.compute_token_cost()}")
+      return messages, raws, path
+
+def rank_google_answer(model:GoogleModel, conversation: list[str]):
+    reply, raw = model.send_msg_and_get_contnent(conversation+[google_user_format(rater_prompt)], instruction=None)
+    print(f"{reply}")
+    print(model.compute_token_cost())
+    return reply, raw

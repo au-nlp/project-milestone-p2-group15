@@ -1,9 +1,9 @@
 from enum import Enum
 from models.prompt_template import Reflector, Evaluator
-from models.azure_api import Model
-
+from models.azure_api import Model, azure_user_format
+from typing import Callable
 # Evaluator function
-def evaluator_fn(task, attempt, model):
+def evaluator_fn(task, attempt, model, user_format):
     prompt = f"""
                       {Evaluator}
 
@@ -15,7 +15,7 @@ def evaluator_fn(task, attempt, model):
 
                       Return a short self-reflection that improves the solver.
                   """
-    messages = [{"role": "user", "content": prompt}]
+    messages = [user_format(prompt)]
     
     # call the method on your Model object
     feedback, raw = model.send_msg_and_get_contnent(messages)
@@ -36,7 +36,9 @@ class ReflexionStrategy(Enum):
     REFLEXION = 'reflexion'
     LAST_ATTEMPT_AND_REFLEXION = 'last_trial_and_reflexion'
 
+
 class ReflexionAgent:
+    user_format: Callable[[str], str|dict]
     def __init__(
         self,
         llm : Model,
@@ -44,6 +46,7 @@ class ReflexionAgent:
         evaluator_fn,
         reflector_prompt=Reflector,
         max_attempts=5,
+        user_format = azure_user_format
     ):
         self.llm = llm
         self.strategy = strategy
@@ -56,8 +59,9 @@ class ReflexionAgent:
         self.reflections = []
         self.feedback = None
 
+        self.user_format = user_format
 
-    def reflect(self, task: str):
+    def reflect(self, task: str, user_format):
         prompt = f"""
                       {self.reflector_prompt.behavior}
 
@@ -72,7 +76,7 @@ class ReflexionAgent:
 
                       Return a short self-reflection that improves the solver.
                   """
-        messages = [{"role": "user", "content": prompt}]
+        messages = [user_format(prompt)]
     
         # call the method on your Model object
         reply, raw = self.llm.send_msg_and_get_contnent(messages)
@@ -97,14 +101,14 @@ class ReflexionAgent:
             base_prompt += "\nGive step-by-step solution and a final answer."
 
             print(f"\n=== Attempt {i+1} ===")
-            messages = [{"role": "user", "content": base_prompt}]
+            messages = [self.user_format(base_prompt)]
             reply, raw = self.llm.send_msg_and_get_contnent(messages)
             attempt = reply or ""
             print(attempt)
             self.attempts.append(attempt)
 
             # 3) Evaluate
-            score, feedback = self.evaluator_fn(task, attempt)
+            score, feedback = self.evaluator_fn(task, attempt, user_format=self.user_format)
             self.feedback = feedback
 
             print(f"Score: {score}")
@@ -115,7 +119,7 @@ class ReflexionAgent:
 
             # 4) If failed — apply reflection
             if self.strategy in [ReflexionStrategy.REFLEXION, ReflexionStrategy.LAST_ATTEMPT_AND_REFLEXION]:
-                reflection = self.reflect(task)
+                reflection = self.reflect(task, user_format=self.user_format)
                 print(f"Reflection: {reflection}")
 
         # failsafe
