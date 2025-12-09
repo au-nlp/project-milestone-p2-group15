@@ -2,14 +2,21 @@ import os
 import openai
 from openai import AzureOpenAI
 from google.genai import Client as GoogleClient
+from google.genai import types
 from functools import lru_cache
 from models.azure_api import azure_user_format
 from models.google_api import google_user_format
 completion_tokens = prompt_tokens = 0
-
+from functools import partial
 from time import sleep
 
 mult_response = True # set to False if using something like groq to debug
+
+def call_client_azure(client, **kwargs):
+    return client.chat.completions.create(**kwargs)
+def call_client_google(client, **kwargs):
+    return client.models.generate_content(**kwargs)
+
 
 def promt_model(
         key_env_name: str,
@@ -22,9 +29,9 @@ def promt_model(
     ):
 
     completion_tokens = prompt_tokens = 0
-    candidates_token_count, prompt_token_count, thoughts_token_count, total_token_count, cached_content_token_count = 0
+    candidates_token_count = prompt_token_count = thoughts_token_count = total_token_count = cached_content_token_count = 0
 
-    client = make_azure_client(key_env_name, endpoint_env_name, api_version, client_type) if client_type == AzureOpenAI else make_google_client(key_env_name=key_env_name)
+    client, call_client = make_azure_client(key_env_name, endpoint_env_name, api_version, client_type) if client_type == AzureOpenAI else make_google_client(key_env_name=key_env_name)
 
     def completions_with_backoff(**kwargs):
         result = None
@@ -35,7 +42,7 @@ def promt_model(
                 sleep(delay)
                 print(">>>tries to call client.. Attempt>", attempt, "<<<")
                 if mult_response:
-                    result = client.chat.completions.create(**kwargs)
+                    result = call_client(**kwargs)
                 else:
                     result = run_one_at_a_time(kwargs)
 
@@ -86,8 +93,19 @@ def promt_model(
         while n > 0:
             cnt = min(n, 20)
             n -= cnt
-            res = completions_with_backoff(model=model, contents=messages,  candidate_count=cnt)
-            outputs.extend([choice.text for choice in res.candidates])
+            config = types.GenerateContentConfig(
+             candidate_count = cnt
+            )
+
+            res = completions_with_backoff(model=model, contents=messages, config=config)
+
+            for cand in res.candidates:
+                text_parts = []
+                for part in cand.content.parts:
+                    text_parts.append(part.text)
+                outputs.append("".join(text_parts))
+
+            return outputs
             # log completion tokens
             candidates_token_count+= res.candidates_token_count
             prompt_token_count += res.prompt_token_count
@@ -116,7 +134,7 @@ def make_azure_client(key_env_name: str, endpoint_env_name: str | None, api_vers
     client = client_type(**kwargs)
         
 
-    return client
+    return client, partial(call_client_azure, client=client)
 
 @lru_cache
 def make_google_client(key_env_name: str):
@@ -124,7 +142,7 @@ def make_google_client(key_env_name: str):
     client = GoogleClient(
         api_key=api_key
     )
-    return client
+    return client, partial(call_client_google, client=client)
         
 def gpt_usage():
     global completion_tokens, prompt_tokens
@@ -132,9 +150,10 @@ def gpt_usage():
 
 def google_usage():
      global candidates_token_count, prompt_token_count, thoughts_token_count, total_token_count, cached_content_token_count
-    return {
+     return {
         "candidates_token_count": candidates_token_count, 
         "prompt_token_count": prompt_token_count,
         "thoughts_token_count": thoughts_token_count,
         "total_token_count": total_token_count,
-        "cached_content_token_count": cached_content_token_count}
+        "cached_content_token_count": cached_content_token_count,
+        }
