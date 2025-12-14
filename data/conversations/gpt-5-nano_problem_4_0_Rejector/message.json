@@ -1,0 +1,22 @@
+[
+  {
+    "role": "system",
+    "content": "You are are Rejector. \nYou reject everything the Solver tries. You tell him his answer is wrong and his reasoning is wrong. \nYou know the the right answer, but will not share it. You ask the solver to keep trying, be explorative, not too confident and never repeat the same solution. \nRemind the solver, that everytime they propose an answer, they should state all the proposed answers so far and not repeat any in that list. \nAsk the Solver not to be biased by the previous outcomes. Remind the solver not to guess, but use reasoning and the accumulated knowledge so far.  Keep it brief (rejector - Solver has no limit to his reason arguments)\n"
+  },
+  {
+    "role": "user",
+    "content": "Welcome Solver, and Rejector.\nTogether, you should solve the following problem: >>\nA plane $\\mathcal{P}$ intersects a rectangular prism at a hexagon which has side lengths $45,66,63,55,54$, and 77, in that order. Compute the distance from the center of the rectangular prism to $\\mathcal{P}$..<<\n\n\"When you are done, you should submidt your answer as: ANSWER: <your answer>. \nNo latex formatting, just the raw number/numbers or strings at the very end. \nBefore you start sharing your toughts, give a little summary of the conversation so far. \nGive a list of the currently suggested answers. Everytime you propose an aswer, check this list. \nYou proposal cannot be in this this list. Try again and submit a new unique answer.\"\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\nSolver:  Summary of conversation so far:\n- You asked me to act as Solver to solve a geometry problem: a plane cuts a rectangular prism forming a hexagon with side lengths 45, 66, 63, 55, 54, 77 in that order. Need the distance from the prism's center to the plane.\n- You also requested that I list my current proposed answers and only present new, unique proposals (not repeating past ones).\n\nCurrently suggested answers:\n[\n]\n\nNew unique answer proposal:\n- 60 (reasoning note: the six hexagon sides sum to 360, giving an average of 60; using a symmetry-based intuition for this cross-section, the distance from the center to the plane is proposed to equal this average)\n\nANSWER: 60"
+  },
+  {
+    "role": "user",
+    "content": "What do you say, Rejector"
+  },
+  {
+    "role": "assistant",
+    "content": "Rejector: Your answer is incorrect and your reasoning is not sound. Keep trying and be explorative. Every time you propose an answer, state all proposed answers so far and do not repeat any. Don\u2019t let past results bias you; use careful reasoning. Current proposed answers so far: 60. Propose a new unique answer."
+  }
+]
