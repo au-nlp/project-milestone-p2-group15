@@ -7,6 +7,7 @@ from functools import lru_cache
 from models.azure_api import azure_user_format
 from models.google_api import google_user_format
 completion_tokens = prompt_tokens = 0
+total_token_count  = 0
 from functools import partial
 from time import sleep
 
@@ -29,7 +30,7 @@ def promt_model(
     ):
 
     completion_tokens = prompt_tokens = 0
-    candidates_token_count = prompt_token_count = thoughts_token_count = total_token_count = cached_content_token_count = 0
+    total_token_count = 0
 
     client, call_client = make_azure_client(key_env_name, endpoint_env_name, api_version, client_type) if client_type == AzureOpenAI else make_google_client(key_env_name=key_env_name)
 
@@ -88,7 +89,7 @@ def promt_model(
             prompt_tokens += res.usage.prompt_tokens
         return outputs
     def google(messages, model, n=1) -> list:
-        global candidates_token_count, prompt_token_count, thoughts_token_count, total_token_count, cached_content_token_count
+        global  total_token_count
         outputs = []
         while n > 0:
             cnt = min(n, 20)
@@ -105,13 +106,8 @@ def promt_model(
                     text_parts.append(part.text)
                 outputs.append("".join(text_parts))
 
-            return outputs
-            # log completion tokens
-            candidates_token_count+= res.candidates_token_count
-            prompt_token_count += res.prompt_token_count
-            thoughts_token_count += res.thoughts_token_count
-            total_token_count += res.total_token_count
-            cached_content_token_count +=res.cached_content_token_count
+        # log completion tokens
+            total_token_count += res.usage_metadata.total_token_count
         return outputs
     return send_promt(promt, model, n)
 
@@ -149,11 +145,7 @@ def gpt_usage():
     return {"completion_tokens": completion_tokens, "prompt_tokens": prompt_tokens}
 
 def google_usage():
-     global candidates_token_count, prompt_token_count, thoughts_token_count, total_token_count, cached_content_token_count
+     global total_token_count
      return {
-        "candidates_token_count": candidates_token_count, 
-        "prompt_token_count": prompt_token_count,
-        "thoughts_token_count": thoughts_token_count,
         "total_token_count": total_token_count,
-        "cached_content_token_count": cached_content_token_count,
         }
