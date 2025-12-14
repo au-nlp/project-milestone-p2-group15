@@ -97,7 +97,6 @@ rater_prompt = (
 def rank_answer(model:ModelBase, conversation: list[str]):
     reply, raw = model.send_msg_and_get_contnent(conversation+[{"role": "user", "content": f"{rater_prompt}"}])
     print(f"{reply}")
-    print(model.compute_token_cost())
     return reply, raw
 
 

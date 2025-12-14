@@ -31,7 +31,18 @@ class Model(ModelBase):
     raw = self._raw_response(msg)
     content = raw.choices[0].message.content
     return content, raw
+  
+  def compute_token_cost(self) -> defaultdict:
 
+    token_counts = defaultdict(int)   
+
+    for run_step in self.num_tokens:
+        usage = run_step.usage
+        token_counts["input"] += usage.input_tokens
+        token_counts["output"] += usage.output_tokens
+        token_counts["total"] += usage.total_tokens
+
+    return token_counts
 
 class Client:
   client: AzureOpenAI
@@ -58,18 +69,6 @@ class Client:
       model_name=model_name,
       send_messages=send_messages
     )
-      
-  def compute_token_cost(self) -> defaultdict:
-
-    token_counts = defaultdict(int)   
-
-    for run_step in self.num_tokens:
-        usage = run_step.usage
-        token_counts["input"] += usage.input_tokens
-        token_counts["output"] += usage.output_tokens
-        token_counts["total"] += usage.total_tokens
-
-    return token_counts
 
 
 def azure_user_format(promt: str) -> dict:
