@@ -1,21 +1,21 @@
 ,unique_problem_label,ten_percentile_group,method,total_tokens,correct,params,result_description
 0,MathArena/cmimc_2025: 16,5,reflexion,49787,False,max_attempt=3,
-0,MathArena/cmimc_2025: 16,5,tot,,,,
+0,MathArena/cmimc_2025: 16,5,tot,1612774,False,all=4,
 0,MathArena/cmimc_2025: 16,5,rejection_sampling_basic,597448,False,n_steps=20,
-0,MathArena/cmimc_2025: 16,5,rejection_sampling_summarized,538780,True,n_steps=10,2nd
+0,MathArena/cmimc_2025: 16,5,rejection_sampling_summarized,538780,False,n_steps=10,2nd
 0,MathArena/aime_2025: 20,4,reflexion,66965,True,max_attempt=3,
-0,MathArena/aime_2025: 20,4,tot,,,,
+0,MathArena/aime_2025: 20,4,tot,213862,True,all=3,
 0,MathArena/aime_2025: 20,4,rejection_sampling_basic,200213,True,n_steps=10,
 0,MathArena/aime_2025: 20,4,rejection_sampling_summarized,367313,True,n_steps=5,
 0,MathArena/hmmt_feb_2025: 18,3,reflexion,31132,True,max_attempt=3,
-0,MathArena/hmmt_feb_2025: 18,3,tot,,,,
+0,MathArena/hmmt_feb_2025: 18,3,tot,456549,False,all=3,
 0,MathArena/hmmt_feb_2025: 18,3,rejection_sampling_basic,277736,True,n_steps=10,
 0,MathArena/hmmt_feb_2025: 18,3,rejection_sampling_summarized,225746,True,n_steps=5,
 0,MathArena/aime_2025: 13,2,reflexion,86690,False,max_attempt=3,
-0,MathArena/aime_2025: 13,2,tot,,,,
+0,MathArena/aime_2025: 13,2,tot,979913,False,all=4,
 0,MathArena/aime_2025: 13,2,rejection_sampling_basic,427053,False,n_steps=20,
-0,MathArena/aime_2025: 13,2,rejection_sampling_summarized,1130850,True,n_steps=20,11th
+0,MathArena/aime_2025: 13,2,rejection_sampling_summarized,1130850,False,n_steps=20,11th
 0,MathArena/aime_2025: 14,1,reflexion,52122,False,max_attempt=3,
-0,MathArena/aime_2025: 14,1,tot,,,,
+0,MathArena/aime_2025: 14,1,tot,1195735,False,all=4,
 0,MathArena/aime_2025: 14,1,rejection_sampling_basic,,,,
-0,MathArena/aime_2025: 14,1,rejection_sampling_summarized,1665394,True,"Non in top5, model does not rank",
+0,MathArena/aime_2025: 14,1,rejection_sampling_summarized,1665394,False,"n_steps=30","Non in top5, model does not rank"
