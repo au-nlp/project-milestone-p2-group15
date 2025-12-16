@@ -1,0 +1,16 @@
+,unique_problem_label,ten_percentile_group,method,total_tokens,correct,params,result_description
+0,MathArena/brumo_2025: 12,5,reflexion,25100,False,max_attempt=3,
+0,MathArena/brumo_2025: 12,5,tot,387909,False,all=4,
+0,MathArena/brumo_2025: 12,5,rejection_sampling_basic,127873,True,n_steps=10,
+0,MathArena/hmmt_feb_2025: 8,4,reflexion,74178,True,max_attempt=3,
+0,MathArena/hmmt_feb_2025: 8,4,tot,377793,True,all=4,
+0,MathArena/hmmt_feb_2025: 8,4,rejection_sampling_basic,127873,True,n_steps=10,
+0,MathArena/hmmt_feb_2025: 25,3,reflexion,66439,False,max_attempt=3,
+0,MathArena/hmmt_feb_2025: 25,3,tot,1020110,False,all=4,
+0,MathArena/hmmt_feb_2025: 25,3,rejection_sampling_basic,111688,True,n_steps=10,
+0,MathArena/aime_2025: 28,2,reflexion,86529,False,max_attempt=30,
+0,MathArena/aime_2025: 28,2,tot,1726405,False,all=4,
+0,MathArena/aime_2025: 28,2,rejection_sampling_basic,597851,False,n_steps=30,7th
+0,MathArena/aime_2025: 14,1,reflexion,22344,False,max_attempt=30,
+0,MathArena/aime_2025: 14,1,tot,2202173,False,all=4,
+0,MathArena/aime_2025: 14,1,rejection_sampling_basic,380492,False,n_steps=30,

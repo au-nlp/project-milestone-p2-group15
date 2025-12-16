@@ -38,3 +38,9 @@ Sections like Abstract, contibutions, and other report related sectons have been
 - Finally, all the sessions where the 3 selected models are run on the selected problems can be found in results folder. The data about each models reponse to each problem usign each method is saved in csv files in results/model_stats. This is then loaded in the main.ipynb file to create the barcharts which are also present in the report. 
 
 We leave much of the preprocessing as in P2, and just load and visualuze the main resutls in the main.ipynb. 
+
+## Division of Labour
+
+In general, we structured most of our work as group sessions where we discussed the ideas and did trio-programming during long sessions. Thomas and Priyanka worked on building the ToT and Reflexion comparison baseline structure, whereas Nishad worked on building visualizations, and setups for model testing.
+
+The report writing was distributed equally.
