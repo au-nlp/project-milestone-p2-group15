@@ -26,7 +26,7 @@ Sections like Abstract, contibutions, and other report related sectons have been
 │   └───model_stats/ # Stores code to visualize the results from each model
 ```
 
-<details>
+</details>
 
 ## Code
 
