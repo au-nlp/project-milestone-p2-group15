@@ -41,6 +41,8 @@ We leave much of the preprocessing as in P2, and just load and visualise the mai
 
 ## Division of Labour
 
-In general, we structured most of our work as group sessions where we discussed the ideas and programmed together during weekly-long sessions. Thomas and Priyanka worked on building the ToT and Reflexion comparison baseline structure, whereas Nishad worked on building visualizations, and setups for model testing.
-
-The report writing was distributed equally.
+In general, we structured most of our work as group sessions where we discussed the ideas and programmed together during weekly-long sessions. 
+- Thomas worked on the ToT baseline structure, data preprocessing and the framework for the rejection sampling.
+- Priyanka worked on the Reflexion baseline framework and collected results for the LLMs. 
+- Nishad worked on building the visualizations, data preprocessing in P2, and writing the general setup for model testing.
+- Finally, the report writing was distributed equally among all team members.
